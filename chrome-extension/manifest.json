@@ -1,0 +1,16 @@
+{
+    "name": "Make Hdm Great Again!",
+    "description": "Improve the HdM Websites!",
+    "version": "0.1",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": [
+                "https://vw-online.hdm-stuttgart.de/qisserver/rds?state=htmlbesch&moduleParameter=Student&menuid=notenspiegel*"
+            ],
+            "js": [
+                "noten-durchschnitt.js"
+            ]
+        }
+    ]
+}
