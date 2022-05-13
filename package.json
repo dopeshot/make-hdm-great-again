@@ -1,0 +1,19 @@
+{
+  "name": "make-hdm-great-again",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dopeshot/make-hdm-great-again.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dopeshot/make-hdm-great-again/issues"
+  },
+  "homepage": "https://github.com/dopeshot/make-hdm-great-again#readme"
+}
