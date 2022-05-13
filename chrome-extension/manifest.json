@@ -12,5 +12,8 @@
                 "noten-durchschnitt.js"
             ]
         }
-    ]
+    ],
+    "icons": {
+        "128": "/images/128.png"
+    }
 }
