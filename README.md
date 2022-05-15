@@ -1,6 +1,6 @@
 # make-hdm-great-again
 
-This repo is used for the equally named chrime extensions.
+This repo is used for the equally named chrome extension.
 
 The purpose is to provide the current avg grade weighted as mentioned in the SPO.
 
