@@ -1,14 +1,16 @@
 const headline = document.querySelector("h1")
 
 function main() {
+    // Safety-check
     if (headline.textContent !== "Notenspiegel") {
         console.warn("Seems like you are not on Notenspiegel.")
         return
     }
 
+    // Get all grades
     const table = document.querySelectorAll('table')[1]
     let kind = null
-    const results = [...table.querySelectorAll('tr')].reduce((acc, row) => {
+    const grades = [...table.querySelectorAll('tr')].reduce((accumulator, row) => {
         const firstThRow = row.querySelector('th')
 
         if (firstThRow !== null) {
@@ -16,13 +18,13 @@ function main() {
             if (isHeadline) {
                 kind = firstThRow.textContent
             }
-            return acc
+            return accumulator
         }
 
         const data = row.querySelectorAll('td')
         const singleMark = parseFloat(data[5].textContent.replaceAll(',', '.'))
 
-        acc.push({
+        accumulator.push({
             title: data[2].textContent.trim(),
             mark: !isNaN(singleMark) ? singleMark : null,
             status: data[6].textContent.trim(),
@@ -30,49 +32,59 @@ function main() {
             kind
         })
 
-        return acc
+        return accumulator
     }, [])
 
-    console.log(results)
+    // Grades
+    console.log(grades)
 
-    const totals = results.reduce((result, entry) => {
+    const sumOfGrades = grades.reduce((result, entry) => {
         if (entry.kind == "Grundstudium" && entry.status == "bestanden" && entry.mark != null) {
-            result.GrStNote += entry.mark * entry.ects
-            result.GrStECTS += entry.ects
+            result.GrundstudiumNote += entry.mark * entry.ects
+            result.GrundstudiumECTS += entry.ects
         }
 
         if (entry.kind == "Hauptstudium" && entry.status == "bestanden" && entry.mark != null) {
-            result.HpStNote += entry.mark * entry.ects
-            result.HpStECTS += entry.ects
+            result.HauptstudiumNote += entry.mark * entry.ects
+            result.HauptstudiumECTS += entry.ects
         }
         return result
 
-    }, { GrStNote: 0.0, GrStECTS: 0, HpStNote: 0.0, HpStECTS: 0 })
+    }, { GrundstudiumNote: 0.0, GrundstudiumECTS: 0, HauptstudiumNote: 0.0, HauptstudiumECTS: 0 })
 
-    const averages = {
-        GrAvg: totals.GrStNote / totals.GrStECTS,
-        HpAvg: totals.HpStNote / totals.HpStECTS,
-        BcAvg: (totals.GrStNote + totals.HpStNote) / (totals.GrStECTS + totals.HpStECTS)
+    const averageGrades = {
+        GrundstudiumAverage: sumOfGrades.GrundstudiumNote / sumOfGrades.GrundstudiumECTS,
+        hauptstudiumAverage: sumOfGrades.HauptstudiumNote / sumOfGrades.HauptstudiumECTS,
+        BachelorAverage: (sumOfGrades.GrundstudiumNote + sumOfGrades.HauptstudiumNote) / (sumOfGrades.GrundstudiumECTS + sumOfGrades.HauptstudiumECTS)
     }
 
-    const GrWeight = 0.15
-    const HpWeight = 0.70
-    const BcWeight = 0.15
+    const GrundstudiumWeight = 0.15
+    const HauptstudiumWeight = 0.70
+    const BachelorWeight = 0.15
 
     const prediction = {
-        GrPred: averages.GrAvg * GrWeight + averages.HpAvg * HpWeight + averages.BcAvg * BcWeight,
+        GradePrediction: averageGrades.GrundstudiumAverage * GrundstudiumWeight + averageGrades.hauptstudiumAverage * HauptstudiumWeight + averageGrades.BachelorAverage * BachelorWeight,
     }
-    console.log(totals)
-    console.log(averages)
+
+    console.log(sumOfGrades)
+    console.log(averageGrades)
     console.log(prediction)
 
+    // Create container for information
     const container = document.createElement("div")
     container.style.backgroundColor = "#5381BE"
     container.style.color = "#fff"
+
+    // Create Grade prediction text
     const list = document.createElement("p")
-    const result = `Gesamt Note: ${prediction.GrPred.toFixed(2)}\n`
+    const result = `Gesamt Note: ${prediction.GradePrediction.toFixed(2)}\n`
     list.textContent = result
 
+    // Create input fields
+    const inputField = document.createElement("input")
+    inputField.
+
+    container.append(inputField)
     container.append(list)
     insertAfter(container, table)
 
