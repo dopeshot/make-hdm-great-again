@@ -6,6 +6,7 @@ let averageGrades = 0
 let GrundstudiumWeight = 15
 let HauptstudiumWeight = 70
 let BachelorWeight = 15
+let BachelorPrediction = 0
 
 function getGrades() {
     // Get all grades
@@ -64,8 +65,12 @@ function getGrades() {
 }
 
 function makePrediction(averageGrades) {
+    BachelorPrediction = BachelorPrediction == 0 ? averageGrades.BachelorAverage.toFixed(2) : BachelorPrediction
     const prediction = {
-        GradePrediction: averageGrades.GrundstudiumAverage * GrundstudiumWeight/100 + averageGrades.hauptstudiumAverage * HauptstudiumWeight/100 + averageGrades.BachelorAverage * BachelorWeight/100,
+        GradePrediction: 
+        averageGrades.GrundstudiumAverage * GrundstudiumWeight / 100 + 
+        averageGrades.hauptstudiumAverage * HauptstudiumWeight / 100 + 
+        BachelorPrediction * BachelorWeight / 100,
     }
 
     return prediction
@@ -73,8 +78,17 @@ function makePrediction(averageGrades) {
 
 function updatePrediction(prediction) {
     // Create Grade prediction text
-    const result = `Gesamt Note: ${prediction.GradePrediction.toFixed(2)}\n`
+    const result = `Vorraussichtliche Note: ${prediction.GradePrediction.toFixed(2)}\n`
     list.textContent = result
+}
+
+function makeSettingsVisible() {
+    const settings = document.getElementsByClassName("weightSettings")
+    for (let index = 0; index < settings.length; index++) {
+        const element = settings[index];
+        if (element.style.visibility == "visible") { element.style.visibility = "hidden" }
+        else element.style.visibility = "visible"
+    }
 }
 
 function addHtml() {
@@ -83,7 +97,25 @@ function addHtml() {
     container.style.backgroundColor = "#5381BE"
     container.style.color = "#fff"
 
-    // Create input fields
+    // Button for settings visibility
+    const weightsButton = document.createElement("button")
+    weightsButton.textContent = "Gewichtungen anpassen"
+    weightsButton.style.marginLeft = '1px'
+    weightsButton.onclick = makeSettingsVisible
+
+    // Create Bachelor grade input field
+    const bachelorPrediction = document.createElement("p")
+    const bachelorPredictionInput = document.createElement("input")
+    bachelorPredictionInput.type = "number"
+    bachelorPredictionInput.step = 0.1
+    bachelorPredictionInput.value = BachelorPrediction
+    bachelorPredictionInput.style.alignContent = "right"
+    bachelorPredictionInput.style.width = "50px"
+    bachelorPredictionInput.addEventListener("change", function () { BachelorPrediction = bachelorPredictionInput.value; updatePrediction(makePrediction(averageGrades)) })
+    bachelorPrediction.textContent = `Bachelor Note: `
+    bachelorPrediction.append(bachelorPredictionInput)
+
+    // Create setting input fields
     const grundstudiumSettings = document.createElement("p")
     const grundstudiumInput = document.createElement("input")
     grundstudiumInput.type = "number"
@@ -91,8 +123,10 @@ function addHtml() {
     grundstudiumInput.style.alignContent = "right"
     grundstudiumInput.style.width = "50px"
     grundstudiumInput.addEventListener("change", function () { GrundstudiumWeight = grundstudiumInput.value; updatePrediction(makePrediction(averageGrades)) })
-    grundstudiumSettings.textContent = `Grundstudium Gewichtung: `
+    grundstudiumSettings.textContent = `Grundstudium: `
     grundstudiumSettings.style.display = "inline"
+    grundstudiumSettings.style.visibility = "hidden"
+    grundstudiumSettings.className = "weightSettings"
     grundstudiumSettings.append(grundstudiumInput)
 
     const hauptstudiumSettings = document.createElement("p")
@@ -102,8 +136,10 @@ function addHtml() {
     hauptstudiumInput.style.alignContent = "right"
     hauptstudiumInput.style.width = "50px"
     hauptstudiumInput.addEventListener("change", function () { HauptstudiumWeight = hauptstudiumInput.value; updatePrediction(makePrediction(averageGrades)) })
-    hauptstudiumSettings.textContent = `Hauptstudium Gewichtung: `
+    hauptstudiumSettings.textContent = `Hauptstudium: `
     hauptstudiumSettings.style.display = "inline"
+    hauptstudiumSettings.style.visibility = "hidden"
+    hauptstudiumSettings.className = "weightSettings"
     hauptstudiumSettings.append(hauptstudiumInput)
 
     const bachelorSettings = document.createElement("p")
@@ -113,13 +149,17 @@ function addHtml() {
     bachelorInput.style.alignContent = "right"
     bachelorInput.style.width = "50px"
     bachelorInput.addEventListener("change", function () { BachelorWeight = bachelorInput.value; updatePrediction(makePrediction(averageGrades)) })
-    bachelorSettings.textContent = `Bachelor Gewichtung: `
+    bachelorSettings.textContent = `Bachelor: `
     bachelorSettings.style.display = "inline"
+    bachelorSettings.style.visibility = "hidden"
+    bachelorSettings.className = "weightSettings"
     bachelorSettings.append(bachelorInput)
 
+    container.append(weightsButton)
     container.append(grundstudiumSettings)
     container.append(hauptstudiumSettings)
     container.append(bachelorSettings)
+    container.append(bachelorPrediction)
     container.append(list)
     insertAfter(container, table)
 
