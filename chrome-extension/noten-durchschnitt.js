@@ -92,6 +92,7 @@ function addHtml() {
     grundstudiumInput.style.width = "50px"
     grundstudiumInput.addEventListener("change", function () { GrundstudiumWeight = grundstudiumInput.value; updatePrediction(makePrediction(averageGrades)) })
     grundstudiumSettings.textContent = `Grundstudium Gewichtung: `
+    grundstudiumSettings.style.display = "inline"
     grundstudiumSettings.append(grundstudiumInput)
 
     const hauptstudiumSettings = document.createElement("p")
@@ -102,6 +103,7 @@ function addHtml() {
     hauptstudiumInput.style.width = "50px"
     hauptstudiumInput.addEventListener("change", function () { HauptstudiumWeight = hauptstudiumInput.value; updatePrediction(makePrediction(averageGrades)) })
     hauptstudiumSettings.textContent = `Hauptstudium Gewichtung: `
+    hauptstudiumSettings.style.display = "inline"
     hauptstudiumSettings.append(hauptstudiumInput)
 
     const bachelorSettings = document.createElement("p")
@@ -112,6 +114,7 @@ function addHtml() {
     bachelorInput.style.width = "50px"
     bachelorInput.addEventListener("change", function () { BachelorWeight = bachelorInput.value; updatePrediction(makePrediction(averageGrades)) })
     bachelorSettings.textContent = `Bachelor Gewichtung: `
+    bachelorSettings.style.display = "inline"
     bachelorSettings.append(bachelorInput)
 
     container.append(grundstudiumSettings)
