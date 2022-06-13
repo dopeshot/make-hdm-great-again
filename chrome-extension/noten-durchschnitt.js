@@ -7,6 +7,7 @@ let GrundstudiumWeight = 15
 let HauptstudiumWeight = 70
 let BachelorWeight = 15
 let BachelorPrediction = 0
+let TotalEcts = 0
 
 function getGrades() {
     // Get all grades
@@ -43,11 +44,13 @@ function getGrades() {
         if (entry.kind == "Grundstudium" && entry.status == "bestanden" && entry.mark != null) {
             result.GrundstudiumNote += entry.mark * entry.ects
             result.GrundstudiumECTS += entry.ects
+            TotalEcts += entry.ects
         }
 
         if (entry.kind == "Hauptstudium" && entry.status == "bestanden" && entry.mark != null) {
             result.HauptstudiumNote += entry.mark * entry.ects
             result.HauptstudiumECTS += entry.ects
+            TotalEcts += entry.ects
         }
         return result
 
@@ -67,10 +70,10 @@ function getGrades() {
 function makePrediction(averageGrades) {
     BachelorPrediction = BachelorPrediction == 0 ? averageGrades.BachelorAverage.toFixed(2) : BachelorPrediction
     const prediction = {
-        GradePrediction: 
-        averageGrades.GrundstudiumAverage * GrundstudiumWeight / 100 + 
-        averageGrades.hauptstudiumAverage * HauptstudiumWeight / 100 + 
-        BachelorPrediction * BachelorWeight / 100,
+        GradePrediction:
+            averageGrades.GrundstudiumAverage * GrundstudiumWeight / 100 +
+            averageGrades.hauptstudiumAverage * HauptstudiumWeight / 100 +
+            BachelorPrediction * BachelorWeight / 100,
     }
 
     return prediction
@@ -115,7 +118,7 @@ function addHtml() {
     bachelorPrediction.textContent = `Bachelor Note: `
     bachelorPrediction.append(bachelorPredictionInput)
 
-    // Create setting input fields
+    // Add settings for grundstudium weight
     const grundstudiumSettings = document.createElement("p")
     const grundstudiumInput = document.createElement("input")
     grundstudiumInput.type = "number"
@@ -129,6 +132,7 @@ function addHtml() {
     grundstudiumSettings.className = "weightSettings"
     grundstudiumSettings.append(grundstudiumInput)
 
+    // Add settings for hauptstudium weight
     const hauptstudiumSettings = document.createElement("p")
     const hauptstudiumInput = document.createElement("input")
     hauptstudiumInput.type = "number"
@@ -142,6 +146,7 @@ function addHtml() {
     hauptstudiumSettings.className = "weightSettings"
     hauptstudiumSettings.append(hauptstudiumInput)
 
+    // Add settings for bachelor weight
     const bachelorSettings = document.createElement("p")
     const bachelorInput = document.createElement("input")
     bachelorInput.type = "number"
@@ -155,10 +160,16 @@ function addHtml() {
     bachelorSettings.className = "weightSettings"
     bachelorSettings.append(bachelorInput)
 
+    // Add total Ects amount
+    const totalEcts = document.createElement("p")
+    totalEcts.textContent = `ECTS: ${TotalEcts}`
+
+    // Append all elements to container
     container.append(weightsButton)
     container.append(grundstudiumSettings)
     container.append(hauptstudiumSettings)
     container.append(bachelorSettings)
+    container.append(totalEcts)
     container.append(bachelorPrediction)
     container.append(list)
     insertAfter(container, table)
