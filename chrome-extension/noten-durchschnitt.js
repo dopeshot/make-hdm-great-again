@@ -41,16 +41,16 @@ function getGrades() {
     console.log(grades)
 
     const sumOfGrades = grades.reduce((result, entry) => {
+        if(entry.status == "bestanden") TotalEcts+= entry.ects
+        
         if (entry.kind == "Grundstudium" && entry.status == "bestanden" && entry.mark != null) {
             result.GrundstudiumNote += entry.mark * entry.ects
             result.GrundstudiumECTS += entry.ects
-            TotalEcts += entry.ects
         }
 
         if (entry.kind == "Hauptstudium" && entry.status == "bestanden" && entry.mark != null) {
             result.HauptstudiumNote += entry.mark * entry.ects
             result.HauptstudiumECTS += entry.ects
-            TotalEcts += entry.ects
         }
         return result
 
