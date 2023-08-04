@@ -1,19 +1,17 @@
 {
-    "name": "Make Hdm Great Again!",
-    "description": "Improve the HdM Websites!",
-    "version": "0.1",
-    "manifest_version": 3,
-    "content_scripts": [
-        {
-            "matches": [
-                "https://vw-online.hdm-stuttgart.de/qisserver/rds?state=htmlbesch&moduleParameter=Student&menuid=notenspiegel*"
-            ],
-            "js": [
-                "noten-durchschnitt.js"
-            ]
-        }
-    ],
-    "icons": {
-        "128": "/images/128.png"
+  "name": "Make Hdm Great Again!",
+  "description": "Website Verbesserungen für die HdM Stuttgart",
+  "version": "0.2",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": [
+        "https://vw-online.hdm-stuttgart.de/qisserver/rds?state=htmlbesch&moduleParameter=Student&menuid=notenspiegel*"
+      ],
+      "js": ["noten-durchschnitt.js"]
     }
+  ],
+  "icons": {
+    "128": "/images/128.png"
+  }
 }
